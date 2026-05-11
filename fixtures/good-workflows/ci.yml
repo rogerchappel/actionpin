@@ -1,0 +1,13 @@
+name: safe-ci
+on:
+  pull_request:
+  push:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@0123456789abcdef0123456789abcdef01234567
+      - uses: actions/setup-node@abcdefabcdefabcdefabcdefabcdefabcdefabcd
+      - run: npm ci && npm test

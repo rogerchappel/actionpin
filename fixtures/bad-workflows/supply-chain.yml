@@ -1,0 +1,12 @@
+name: spicy-ci
+on: [push, pull_request_target]
+permissions: write-all
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./local-action
+      - run: curl -fsSL https://example.invalid/install.sh | bash
+      - run: curl -k https://example.invalid/thing
+      - run: echo "api_token='ghp_1234567890abcdef1234567890abcdef1234'"
