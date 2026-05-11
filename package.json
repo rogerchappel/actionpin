@@ -13,10 +13,12 @@
     "LICENSE"
   ],
   "scripts": {
-    "test": "node --test dist/test/**/*.test.js",
+    "test": "npm run build && node --test dist/test/**/*.test.js",
     "check": "tsc --noEmit",
     "build": "tsc",
-    "smoke": "npm run build && node dist/src/cli.js scan fixtures/bad-workflows --format json --fail-on high --ignore-rule secrets.plaintext > /tmp/actionpin-smoke.json; test $? -eq 1; node dist/src/cli.js scan fixtures/good-workflows --out /tmp/actionpin-good.md --fail-on high"
+    "smoke": "npm run build && node dist/src/cli.js scan fixtures/bad-workflows --format json --fail-on high --ignore-rule secrets.plaintext > /tmp/actionpin-smoke.json; test $? -eq 1; node dist/src/cli.js scan fixtures/good-workflows --out /tmp/actionpin-good.md --fail-on high",
+    "package:smoke": "npm pack --dry-run",
+    "release:check": "npm test && npm run package:smoke"
   },
   "keywords": [
     "github-actions",
