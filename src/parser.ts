@@ -16,7 +16,7 @@ export function parseWorkflowText(text: string): WorkflowText {
 export function findUses(lines: string[]): UsesRef[] {
   const refs: UsesRef[] = [];
   lines.forEach((line, index) => {
-    const match = /^\s*uses:\s*['"]?([^'"\s#]+)['"]?/i.exec(line);
+    const match = /^\s*-?\s*uses:\s*['"]?([^'"\s#]+)['"]?/i.exec(line);
     if (match?.[1]) refs.push({ value: match[1], line: index + 1, snippet: line.trim() });
   });
   return refs;
