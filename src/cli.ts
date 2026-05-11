@@ -25,13 +25,14 @@ async function main(argv: string[]): Promise<number> {
   const formatFlag = flagString(parsed.flags, 'format');
   const format: ReportFormat = formatFlag === 'json' ? 'json' : 'markdown';
   const fileConfig = await loadConfig(process.cwd(), flagString(parsed.flags, 'config'));
-  const config = mergeConfig(fileConfig, {
+  const cliConfig = {
     root: process.cwd(),
     format,
     failOn: normalizeSeverity(flagString(parsed.flags, 'fail-on'), fileConfig.failOn ?? 'medium'),
     ignoreRules: flagList(parsed.flags, 'ignore-rule'),
-    out: flagString(parsed.flags, 'out')
-  });
+    ...(flagString(parsed.flags, 'out') ? { out: flagString(parsed.flags, 'out') } : {})
+  };
+  const config = mergeConfig(fileConfig, cliConfig);
   const result = await scan(parsed.paths, config);
   const output = config.format === 'json' ? renderJson(result) : renderMarkdown(result);
   if (config.out) await fs.writeFile(config.out, output, 'utf8');

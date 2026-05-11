@@ -14,7 +14,8 @@ export function parseArgs(argv: string[]): ParsedArgs {
     }
     const [rawName, inline] = arg.slice(2).split('=', 2);
     const name = rawName ?? '';
-    const value = inline ?? (rest[i + 1] && !rest[i + 1]?.startsWith('--') ? rest[++i] : true);
+    const next = rest[i + 1];
+    const value: string | boolean = inline ?? (next && !next.startsWith('--') ? String(rest[++i]) : true);
     if (name === 'ignore-rule') {
       const existing = flags[name];
       flags[name] = [...(Array.isArray(existing) ? existing : existing ? [String(existing)] : []), String(value)];

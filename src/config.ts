@@ -15,11 +15,11 @@ export async function loadConfig(root = process.cwd(), configPath?: string): Pro
     const text = await fs.readFile(candidate, 'utf8').catch(() => undefined);
     if (!text) continue;
     const parsed = JSON.parse(text) as FileConfig;
-    return {
-      failOn: parsed.failOn ? normalizeSeverity(parsed.failOn) : undefined,
-      ignoreRules: Array.isArray(parsed.ignoreRules) ? parsed.ignoreRules : undefined,
-      format: parsed.format === 'json' || parsed.format === 'markdown' ? parsed.format : undefined
-    };
+    const config: FileConfig = {};
+    if (parsed.failOn) config.failOn = normalizeSeverity(parsed.failOn);
+    if (Array.isArray(parsed.ignoreRules)) config.ignoreRules = parsed.ignoreRules;
+    if (parsed.format === 'json' || parsed.format === 'markdown') config.format = parsed.format;
+    return config;
   }
   return {};
 }
