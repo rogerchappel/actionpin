@@ -1,0 +1,7 @@
+node_modules/
+dist/
+coverage/
+*.tgz
+actionpin-report.md
+actionpin-report.json
+.DS_Store
