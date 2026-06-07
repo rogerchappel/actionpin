@@ -74,6 +74,11 @@ ActionPin only reads workflow paths you ask it to scan, refuses paths outside th
 
 Use Markdown output for PR artifacts and JSON output for bots or release evidence.
 
+## Demo Recipes
+
+- [Review Risk Workflow Demo](examples/review-risk-workflow.md) scans the bundled risky and safe workflow fixtures and writes both Markdown and JSON reports.
+- [Video brief](docs/promo/video-brief.md) outlines a short grounded walkthrough for promotion or screencast prep.
+
 ## Limitations
 
 ActionPin is not a full YAML interpreter or shell static analyzer. It intentionally catches common, review-worthy patterns without trying to prove a workflow is safe. It does not resolve action metadata, verify SHAs, or inspect remote repositories.
