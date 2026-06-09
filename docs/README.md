@@ -8,6 +8,7 @@ This directory holds project documentation.
 - [Task checklist](TASKS.md)
 - [Factory orchestration notes](ORCHESTRATION.md)
 - [Machine-readable orchestration](orchestration.json)
+- [Release candidate checklist](release-candidate.md)
 - [Contributing guide](../CONTRIBUTING.md)
 - [Security policy](../SECURITY.md)
 - [Agent instructions](../AGENTS.md)
