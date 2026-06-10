@@ -15,7 +15,9 @@
     "dist/src",
     "README.md",
     "LICENSE",
-    "SECURITY.md"
+    "SECURITY.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md"
   ],
   "scripts": {
     "test": "npm run build && node --test dist/test/**/*.test.js",
