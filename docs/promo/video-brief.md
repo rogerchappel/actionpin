@@ -1,5 +1,10 @@
 # Video Brief: Scan a GitHub Actions Workflow Before Review
 
+## Angle
+
+Show how a local-only workflow scanner turns a risky GitHub Actions file into
+reviewable evidence in under a minute.
+
 ## Grounded Product Facts
 
 - ActionPin is a local-first GitHub Actions workflow scanner.
@@ -10,7 +15,10 @@
 
 ## 60-Second Flow
 
-1. Show `fixtures/bad-workflows/supply-chain.yml`.
+1. Show `fixtures/bad-workflows/supply-chain.yml` and point out the intentionally
+   risky lines: unpinned `actions/checkout@v4`, `permissions: write-all`,
+   `pull_request_target`, curl-to-shell, insecure curl flags, and a
+   secret-looking literal.
 2. Run:
 
    ```bash
@@ -38,4 +46,3 @@
 - Do not claim full supply-chain protection.
 - Do not claim remote SHA verification.
 - Do not claim GitHub API integration.
-
