@@ -29,6 +29,23 @@ npm run build
 node dist/src/cli.js scan fixtures/bad-workflows --format json --fail-on high
 ```
 
+## Demo recipe
+
+Run the included fixture scan to see the Markdown evidence format without
+touching your own workflows:
+
+```bash
+npm install
+npm run build
+node dist/src/cli.js scan fixtures/bad-workflows --format markdown --fail-on critical > /tmp/actionpin-demo.md
+sed -n '1,80p' /tmp/actionpin-demo.md
+```
+
+The demo fixture includes intentionally risky examples: unpinned third-party
+actions, broad workflow permissions, a `pull_request_target` trigger, curl-to-
+shell, insecure curl flags, and a secret-looking literal. Use the generated
+Markdown report as a PR comment draft or release evidence artifact.
+
 ## Rules
 
 - `actions.unpinned` — third-party `uses:` references must be pinned to a full 40-character commit SHA.
