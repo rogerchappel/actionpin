@@ -1,7 +1,8 @@
 {
   "project": "actionpin",
   "owner": "oss-factory-subagent",
-  "repoPath": "/Users/roger/Developer/my-opensource/actionpin",
+  "repoPath": "/Users/roger/Developer/my-opensource/_worktrees/20260520-am/actionpin",
+  "mainCheckoutPath": "/Users/roger/Developer/my-opensource/actionpin",
   "github": {
     "owner": "rogerchappel",
     "repo": "actionpin",
@@ -9,7 +10,7 @@
     "defaultBranch": "main"
   },
   "qualityBar": [
-    "functional local-first MVP",
+    "functional local-first TypeScript CLI MVP",
     "fixture-backed tests",
     "README with examples and safety model",
     "30-50 meaningful commits",

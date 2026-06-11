@@ -4,7 +4,8 @@ This repo is owned by exactly one OSS factory sub-agent for this run.
 
 ## Boundaries
 
-- Work only inside `/Users/roger/Developer/my-opensource/actionpin`.
+- Work only inside `/Users/roger/Developer/my-opensource/_worktrees/20260520-am/actionpin` for this factory run.
+- The main checkout at `/Users/roger/Developer/my-opensource/actionpin` exists but is out of bounds for this sub-agent.
 - Do not edit other project repos, `oss-ideas`, or StackForge from this sub-agent.
 - Do not publish secrets, telemetry, private data, or hidden network behavior.
 - Network actions are limited to GitHub repo creation/push/metadata/protection for `rogerchappel/actionpin`.
