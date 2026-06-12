@@ -112,4 +112,13 @@ npm run release:check
 bash scripts/validate.sh
 ```
 
+## Package contents
+
+The npm package allowlist includes the compiled runtime plus the public support
+documents needed for release review: `README.md`, `LICENSE`, `SECURITY.md`,
+`CHANGELOG.md`, `CONTRIBUTING.md`, and `CODE_OF_CONDUCT.md`.
+
+Run `npm run package:smoke` before publishing to confirm the tarball still
+contains the expected files.
+
 See `docs/PRD.md` and `docs/TASKS.md` for the MVP contract.
