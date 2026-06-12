@@ -38,5 +38,11 @@ jobs:
       - name: Smoke
         run: npm run smoke
 
+      - name: Package smoke
+        run: npm run package:smoke
+
+      - name: Release check
+        run: npm run release:check
+
       - name: Validate repository
         run: bash scripts/validate.sh
