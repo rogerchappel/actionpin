@@ -46,6 +46,20 @@ actions, broad workflow permissions, a `pull_request_target` trigger, curl-to-
 shell, insecure curl flags, and a secret-looking literal. Use the generated
 Markdown report as a PR comment draft or release evidence artifact.
 
+For a fixture-backed script that produces both JSON and Markdown reports, run:
+
+```bash
+npm run build
+bash demo/run-workflow-scan.sh
+```
+
+The script scans the included bad and good workflow fixtures, checks that the
+bad fixture fails the high-risk gate, and verifies stable rule IDs in the JSON
+report.
+
+Promotion drafts for this workflow live in
+[docs/promo/social-hooks.md](docs/promo/social-hooks.md).
+
 ## Rules
 
 - `actions.unpinned` — third-party `uses:` references must be pinned to a full 40-character commit SHA.
