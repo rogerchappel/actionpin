@@ -29,6 +29,20 @@ npm run build
 node dist/src/cli.js scan fixtures/bad-workflows --format json --fail-on high
 ```
 
+For a fixture-backed demo that produces both JSON and Markdown reports, run:
+
+```bash
+npm run build
+bash demo/run-workflow-scan.sh
+```
+
+The demo scans the included bad and good workflow fixtures, checks that the bad
+fixture fails the high-risk gate, and verifies stable rule IDs in the JSON
+report.
+
+Promotion drafts for this workflow live in
+[docs/promo/social-hooks.md](docs/promo/social-hooks.md).
+
 ## Rules
 
 - `actions.unpinned` — third-party `uses:` references must be pinned to a full 40-character commit SHA.
