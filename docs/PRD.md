@@ -1,6 +1,6 @@
 # ActionPin PRD
 
-Status: in-progress
+Status: MVP complete
 
 ## Summary
 

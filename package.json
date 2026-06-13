@@ -4,21 +4,29 @@
   "description": "Local-first GitHub Actions workflow risk checker.",
   "type": "module",
   "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
   "exports": {
-    ".": "./dist/src/index.js"
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    }
   },
   "files": [
     "dist/src",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "SECURITY.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "CODE_OF_CONDUCT.md"
   ],
   "scripts": {
     "test": "npm run build && node --test dist/test/**/*.test.js",
     "check": "tsc --noEmit",
     "build": "tsc",
     "smoke": "npm run build && node dist/src/cli.js scan fixtures/bad-workflows --format json --fail-on high --ignore-rule secrets.plaintext > /tmp/actionpin-smoke.json; test $? -eq 1; node dist/src/cli.js scan fixtures/good-workflows --out /tmp/actionpin-good.md --fail-on high",
-    "package:smoke": "npm pack --dry-run",
-    "release:check": "npm test && npm run package:smoke"
+    "package:smoke": "npm run build && npm pack --dry-run",
+    "release:check": "npm run check && npm test && npm run smoke && npm run package:smoke"
   },
   "keywords": [
     "github-actions",
@@ -30,11 +38,22 @@
   ],
   "author": "Roger Chappel",
   "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rogerchappel/actionpin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rogerchappel/actionpin/issues"
+  },
+  "homepage": "https://github.com/rogerchappel/actionpin#readme",
   "devDependencies": {
     "@types/node": "^25.6.2",
     "typescript": "^6.0.3"
   },
   "bin": {
-    "actionpin": "./dist/src/cli.js"
+    "actionpin": "dist/src/cli.js"
   }
 }

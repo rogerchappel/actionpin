@@ -29,13 +29,39 @@ npm run build
 node dist/src/cli.js scan fixtures/bad-workflows --format json --fail-on high
 ```
 
-To generate paired Markdown reports from the built-in risky and passing fixtures:
+## Demo recipe
+
+Run the included fixture scan to see the Markdown evidence format without
+touching your own workflows:
 
 ```bash
+npm install
+npm run build
+node dist/src/cli.js scan fixtures/bad-workflows --format markdown --fail-on critical > /tmp/actionpin-demo.md
+sed -n '1,80p' /tmp/actionpin-demo.md
+```
+
+The demo fixture includes intentionally risky examples: unpinned third-party
+actions, broad workflow permissions, a `pull_request_target` trigger, curl-to-
+shell, insecure curl flags, and a secret-looking literal. Use the generated
+Markdown report as a PR comment draft or release evidence artifact.
+
+For a fixture-backed script that produces both JSON and Markdown reports, run:
+
+```bash
+npm run build
 bash demo/run-workflow-scan.sh
 ```
 
-See [the workflow risk tutorial](docs/tutorials/review-workflow-risk.md) for a review-ready walkthrough.
+The script scans the included bad and good workflow fixtures, checks that the
+bad fixture fails the high-risk gate, and verifies stable rule IDs in the JSON
+report.
+
+Promotion drafts for this workflow live in
+[docs/promo/social-hooks.md](docs/promo/social-hooks.md).
+
+See [the workflow risk tutorial](docs/tutorials/review-workflow-risk.md) for a
+review-ready walkthrough.
 
 ## Rules
 
@@ -82,6 +108,12 @@ ActionPin only reads workflow paths you ask it to scan, refuses paths outside th
 
 Use Markdown output for PR artifacts and JSON output for bots or release evidence.
 
+## Demo Recipes
+
+- [Review Risk Workflow Demo](examples/review-risk-workflow.md) scans the bundled risky and safe workflow fixtures and writes both Markdown and JSON reports.
+- [Workflow risk tutorial](docs/tutorials/review-workflow-risk.md) turns the fixture scan into a review-ready walkthrough.
+- [Video brief](docs/promo/video-brief.md) outlines a short grounded walkthrough for promotion or screencast prep.
+
 ## Limitations
 
 ActionPin is not a full YAML interpreter or shell static analyzer. It intentionally catches common, review-worthy patterns without trying to prove a workflow is safe. It does not resolve action metadata, verify SHAs, or inspect remote repositories.
@@ -93,7 +125,18 @@ npm test
 npm run check
 npm run build
 npm run smoke
+npm run package:smoke
+npm run release:check
 bash scripts/validate.sh
 ```
+
+## Package contents
+
+The npm package allowlist includes the compiled runtime plus the public support
+documents needed for release review: `README.md`, `LICENSE`, `SECURITY.md`,
+`CHANGELOG.md`, `CONTRIBUTING.md`, and `CODE_OF_CONDUCT.md`.
+
+Run `npm run package:smoke` before publishing to confirm the tarball still
+contains the expected files.
 
 See `docs/PRD.md` and `docs/TASKS.md` for the MVP contract.
