@@ -2,27 +2,50 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-tmp="$(mktemp -d)"
-trap 'rm -rf "$tmp"' EXIT
+cd "$repo_root"
 
-if node "$repo_root/dist/src/cli.js" scan \
-  "$repo_root/fixtures/bad-workflows" \
+npm run build >/dev/null
+
+out_dir="${TMPDIR:-/tmp}/actionpin-demo"
+mkdir -p "$out_dir"
+
+set +e
+node dist/src/cli.js scan fixtures/bad-workflows \
   --format json \
   --fail-on high \
-  --out "$tmp/bad-workflows.json"; then
-  echo "bad workflow scan should fail the high-risk gate" >&2
+  --out "$out_dir/bad-workflows.json"
+status=$?
+set -e
+
+if [ "$status" -ne 1 ]; then
+  printf 'expected risky fixture scan to exit 1, got %s\n' "$status" >&2
   exit 1
 fi
 
-node "$repo_root/dist/src/cli.js" scan \
-  "$repo_root/fixtures/good-workflows" \
-  --out "$tmp/good-workflows.md" \
-  --fail-on high
+set +e
+node dist/src/cli.js scan fixtures/bad-workflows \
+  --format markdown \
+  --fail-on critical \
+  --out "$out_dir/bad-workflows.md"
+status=$?
+set -e
 
-grep -q '"ruleId": "actions.unpinned"' "$tmp/bad-workflows.json"
-grep -q '"ruleId": "permissions.broad"' "$tmp/bad-workflows.json"
-grep -q 'ActionPin report' "$tmp/good-workflows.md"
+if [ "$status" -ne 1 ]; then
+  printf 'expected risky fixture Markdown scan to exit 1, got %s\n' "$status" >&2
+  exit 1
+fi
+
+node dist/src/cli.js scan fixtures/good-workflows \
+  --format markdown \
+  --fail-on high \
+  --out "$out_dir/good-workflows.md"
+
+grep -Fq '"ruleId": "actions.unpinned"' "$out_dir/bad-workflows.json"
+grep -Fq '"ruleId": "permissions.broad"' "$out_dir/bad-workflows.json"
+grep -Fq 'shell.curl-bash' "$out_dir/bad-workflows.md"
+grep -Fq 'Result: **pass**' "$out_dir/good-workflows.md"
 
 echo "Demo output:"
-echo "  $tmp/bad-workflows.json"
-echo "  $tmp/good-workflows.md"
+echo "  $out_dir/bad-workflows.json"
+echo "  $out_dir/bad-workflows.md"
+echo "  $out_dir/good-workflows.md"
