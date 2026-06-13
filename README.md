@@ -29,6 +29,14 @@ npm run build
 node dist/src/cli.js scan fixtures/bad-workflows --format json --fail-on high
 ```
 
+To generate paired Markdown reports from the built-in risky and passing fixtures:
+
+```bash
+bash demo/run-workflow-scan.sh
+```
+
+See [the workflow risk tutorial](docs/tutorials/review-workflow-risk.md) for a review-ready walkthrough.
+
 ## Rules
 
 - `actions.unpinned` — third-party `uses:` references must be pinned to a full 40-character commit SHA.
