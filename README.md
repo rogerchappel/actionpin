@@ -142,3 +142,17 @@ Run `npm run package:smoke` before publishing to confirm the tarball still
 contains the expected files.
 
 See `docs/PRD.md` and `docs/TASKS.md` for the MVP contract.
+## Release readiness
+
+Before opening a release PR, run the package checks that exercise the build, tests, smoke path, and pack manifest:
+
+```sh
+npm run check
+npm test
+npm run smoke
+npm run package:smoke
+npm run release:check
+```
+
+The package metadata points at the public GitHub repository so npm and generated provenance link back to the source.
+
