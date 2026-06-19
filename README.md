@@ -62,6 +62,8 @@ Promotion drafts for this workflow live in
 
 See [the workflow risk tutorial](docs/tutorials/review-workflow-risk.md) for a
 review-ready walkthrough.
+Use [the PR review checklist](docs/tutorials/pr-review-checklist.md) when you
+want to turn ActionPin rule IDs into reviewer questions.
 
 ## Rules
 
@@ -113,6 +115,7 @@ Use Markdown output for PR artifacts and JSON output for bots or release evidenc
 - [Review Risk Workflow Demo](examples/review-risk-workflow.md) scans the bundled risky and safe workflow fixtures and writes both Markdown and JSON reports.
 - [Pull request target fixture review](examples/pr-target-review.md) focuses on the privileged `pull_request_target` fixture and the matching demo script.
 - [Workflow risk tutorial](docs/tutorials/review-workflow-risk.md) turns the fixture scan into a review-ready walkthrough.
+- [PR review checklist](docs/tutorials/pr-review-checklist.md) maps rule IDs to focused review questions.
 - [Pull request target review](docs/tutorials/pr-target-review.md) focuses on a privileged PR workflow with a narrow allow comment.
 - [Video brief](docs/promo/video-brief.md) outlines a short grounded walkthrough for promotion or screencast prep.
 
@@ -155,4 +158,3 @@ npm run release:check
 ```
 
 The package metadata points at the public GitHub repository so npm and generated provenance link back to the source.
-
