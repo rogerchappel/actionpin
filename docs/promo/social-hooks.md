@@ -15,6 +15,8 @@ API requirement.
    so reviewers can see exact file, line, snippet, and remediation context.
 4. Demo idea: scan a risky workflow, then scan the pinned fixture. The
    difference is small enough for a one-minute security review clip.
+5. New review aid: `docs/tutorials/pr-review-checklist.md` maps rule IDs to
+   concrete reviewer questions for workflow pull requests.
 
 ## Launch note draft
 
