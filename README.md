@@ -62,6 +62,8 @@ Promotion drafts for this workflow live in
 
 See [the workflow risk tutorial](docs/tutorials/review-workflow-risk.md) for a
 review-ready walkthrough.
+Use [the PR review checklist](docs/tutorials/pr-review-checklist.md) when you
+want to turn ActionPin rule IDs into reviewer questions.
 
 ## Rules
 
@@ -112,6 +114,7 @@ Use Markdown output for PR artifacts and JSON output for bots or release evidenc
 
 - [Review Risk Workflow Demo](examples/review-risk-workflow.md) scans the bundled risky and safe workflow fixtures and writes both Markdown and JSON reports.
 - [Workflow risk tutorial](docs/tutorials/review-workflow-risk.md) turns the fixture scan into a review-ready walkthrough.
+- [PR review checklist](docs/tutorials/pr-review-checklist.md) maps rule IDs to focused review questions.
 - [Video brief](docs/promo/video-brief.md) outlines a short grounded walkthrough for promotion or screencast prep.
 
 ## Limitations
