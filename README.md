@@ -59,6 +59,8 @@ report.
 
 Promotion drafts for this workflow live in
 [docs/promo/social-hooks.md](docs/promo/social-hooks.md).
+For short rule-ID oriented launch drafts, see
+[docs/promo/rule-id-social-pack.md](docs/promo/rule-id-social-pack.md).
 
 See [the workflow risk tutorial](docs/tutorials/review-workflow-risk.md) for a
 review-ready walkthrough.
