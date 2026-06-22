@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v6 # actionpin allow: actions.unpinned
+        uses: actions/checkout@v7 # actionpin allow: actions.unpinned
 
       - name: Set up Node.js
         uses: actions/setup-node@v5 # actionpin allow: actions.unpinned
