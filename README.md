@@ -67,6 +67,15 @@ review-ready walkthrough.
 Use [the PR review checklist](docs/tutorials/pr-review-checklist.md) when you
 want to turn ActionPin rule IDs into reviewer questions.
 
+For a focused `pull_request_target` gate with JSON and Markdown artifacts:
+
+```bash
+bash demo/run-pr-target-gate.sh
+```
+
+See [docs/tutorials/pr-target-gate.md](docs/tutorials/pr-target-gate.md) and
+[docs/promo/pr-target-gate-social-hooks.md](docs/promo/pr-target-gate-social-hooks.md).
+
 ## Rules
 
 - `actions.unpinned` — third-party `uses:` references must be pinned to a full 40-character commit SHA.
