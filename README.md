@@ -14,7 +14,7 @@ node dist/src/cli.js rules
 
 When published, the CLI is exposed as `actionpin`.
 
-## Quick start
+## Quickstart
 
 ```bash
 actionpin scan .github/workflows --out actionpin-report.md
