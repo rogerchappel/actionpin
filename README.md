@@ -85,6 +85,16 @@ bash demo/run-fixture-comparison.sh
 
 See [docs/tutorials/fixture-comparison.md](docs/tutorials/fixture-comparison.md).
 
+For a focused permissions review artifact generated from the bad workflow
+fixture:
+
+```bash
+bash demo/run-permissions-review.sh
+```
+
+See [docs/tutorials/permissions-review.md](docs/tutorials/permissions-review.md)
+and [docs/promo/permissions-review-video-brief.md](docs/promo/permissions-review-video-brief.md).
+
 ## Rules
 
 - `actions.unpinned` — third-party `uses:` references must be pinned to a full 40-character commit SHA.
