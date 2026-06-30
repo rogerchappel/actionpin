@@ -76,6 +76,15 @@ bash demo/run-pr-target-gate.sh
 See [docs/tutorials/pr-target-gate.md](docs/tutorials/pr-target-gate.md) and
 [docs/promo/pr-target-gate-social-hooks.md](docs/promo/pr-target-gate-social-hooks.md).
 
+For a side-by-side fixture comparison across risky, warning-only, and passing
+workflow examples:
+
+```bash
+bash demo/run-fixture-comparison.sh
+```
+
+See [docs/tutorials/fixture-comparison.md](docs/tutorials/fixture-comparison.md).
+
 ## Rules
 
 - `actions.unpinned` — third-party `uses:` references must be pinned to a full 40-character commit SHA.
