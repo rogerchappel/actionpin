@@ -148,6 +148,7 @@ Use Markdown output for PR artifacts and JSON output for bots or release evidenc
 - [PR review checklist](docs/tutorials/pr-review-checklist.md) maps rule IDs to focused review questions.
 - [Pull request target review](docs/tutorials/pr-target-review.md) focuses on a privileged PR workflow with a narrow allow comment.
 - [Video brief](docs/promo/video-brief.md) outlines a short grounded walkthrough for promotion or screencast prep.
+- [Live demo checklist](docs/promo/live-demo-checklist.md) gives a concise recording flow based on the bundled fixtures.
 
 ## Limitations
 
