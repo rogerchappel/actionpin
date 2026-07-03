@@ -150,6 +150,19 @@ Use Markdown output for PR artifacts and JSON output for bots or release evidenc
 - [Video brief](docs/promo/video-brief.md) outlines a short grounded walkthrough for promotion or screencast prep.
 - [Live demo checklist](docs/promo/live-demo-checklist.md) gives a concise recording flow based on the bundled fixtures.
 
+
+## Verification
+
+Run the local quality gates before opening a pull request:
+
+```sh
+npm run lint
+npm test
+npm run smoke
+```
+
+`npm run lint` is an alias for the repository static check so contributors can use the common npm workflow without guessing the project-specific command.
+
 ## Limitations
 
 ActionPin is not a full YAML interpreter or shell static analyzer. It intentionally catches common, review-worthy patterns without trying to prove a workflow is safe. It does not resolve action metadata, verify SHAs, or inspect remote repositories.
