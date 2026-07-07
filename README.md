@@ -14,7 +14,7 @@ node dist/src/cli.js rules
 
 When published, the CLI is exposed as `actionpin`.
 
-## Quick start
+## Quickstart
 
 ```bash
 actionpin scan .github/workflows --out actionpin-report.md
@@ -60,9 +60,41 @@ report.
 Promotion drafts for this workflow live in
 [docs/promo/social-hooks.md](docs/promo/social-hooks.md) and
 [docs/promo/release-note.md](docs/promo/release-note.md).
+For short rule-ID oriented launch drafts, see
+[docs/promo/rule-id-social-pack.md](docs/promo/rule-id-social-pack.md).
 
 See [the workflow risk tutorial](docs/tutorials/review-workflow-risk.md) for a
 review-ready walkthrough.
+Use [the PR review checklist](docs/tutorials/pr-review-checklist.md) when you
+want to turn ActionPin rule IDs into reviewer questions.
+
+For a focused `pull_request_target` gate with JSON and Markdown artifacts:
+
+```bash
+bash demo/run-pr-target-gate.sh
+```
+
+See [docs/tutorials/pr-target-gate.md](docs/tutorials/pr-target-gate.md) and
+[docs/promo/pr-target-gate-social-hooks.md](docs/promo/pr-target-gate-social-hooks.md).
+
+For a side-by-side fixture comparison across risky, warning-only, and passing
+workflow examples:
+
+```bash
+bash demo/run-fixture-comparison.sh
+```
+
+See [docs/tutorials/fixture-comparison.md](docs/tutorials/fixture-comparison.md).
+
+For a focused permissions review artifact generated from the bad workflow
+fixture:
+
+```bash
+bash demo/run-permissions-review.sh
+```
+
+See [docs/tutorials/permissions-review.md](docs/tutorials/permissions-review.md)
+and [docs/promo/permissions-review-video-brief.md](docs/promo/permissions-review-video-brief.md).
 
 ## Rules
 
@@ -112,8 +144,25 @@ Use Markdown output for PR artifacts and JSON output for bots or release evidenc
 ## Demo Recipes
 
 - [Review Risk Workflow Demo](examples/review-risk-workflow.md) scans the bundled risky and safe workflow fixtures and writes both Markdown and JSON reports.
+- [Pull request target fixture review](examples/pr-target-review.md) focuses on the privileged `pull_request_target` fixture and the matching demo script.
 - [Workflow risk tutorial](docs/tutorials/review-workflow-risk.md) turns the fixture scan into a review-ready walkthrough.
+- [PR review checklist](docs/tutorials/pr-review-checklist.md) maps rule IDs to focused review questions.
+- [Pull request target review](docs/tutorials/pr-target-review.md) focuses on a privileged PR workflow with a narrow allow comment.
 - [Video brief](docs/promo/video-brief.md) outlines a short grounded walkthrough for promotion or screencast prep.
+- [Live demo checklist](docs/promo/live-demo-checklist.md) gives a concise recording flow based on the bundled fixtures.
+
+
+## Verification
+
+Run the local quality gates before opening a pull request:
+
+```sh
+npm run lint
+npm test
+npm run smoke
+```
+
+`npm run lint` is an alias for the repository static check so contributors can use the common npm workflow without guessing the project-specific command.
 
 ## Limitations
 
@@ -141,3 +190,16 @@ Run `npm run package:smoke` before publishing to confirm the tarball still
 contains the expected files.
 
 See `docs/PRD.md` and `docs/TASKS.md` for the MVP contract.
+## Release readiness
+
+Before opening a release PR, run the package checks that exercise the build, tests, smoke path, and pack manifest:
+
+```sh
+npm run check
+npm test
+npm run smoke
+npm run package:smoke
+npm run release:check
+```
+
+The package metadata points at the public GitHub repository so npm and generated provenance link back to the source.

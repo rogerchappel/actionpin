@@ -15,6 +15,8 @@ API requirement.
    so reviewers can see exact file, line, snippet, and remediation context.
 4. Demo idea: scan a risky workflow, then scan the pinned fixture. The
    difference is small enough for a one-minute security review clip.
+5. New review aid: `docs/tutorials/pr-review-checklist.md` maps rule IDs to
+   concrete reviewer questions for workflow pull requests.
 
 ## Launch note draft
 
@@ -40,3 +42,13 @@ fixture to fail the high-risk gate, and verifies stable rule IDs in the JSON
 report.
 
 For a longer launch-note draft, see [release-note.md](release-note.md).
+
+## Fixture comparison angle
+
+```sh
+bash demo/run-fixture-comparison.sh
+```
+
+Use this when the story is contrast: bad workflows fail a high gate,
+`pull_request_target` fails a medium gate, and the good fixture passes. See
+[fixture comparison hooks](fixture-comparison-hooks.md).
