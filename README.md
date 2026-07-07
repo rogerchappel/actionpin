@@ -58,7 +58,8 @@ bad fixture fails the high-risk gate, and verifies stable rule IDs in the JSON
 report.
 
 Promotion drafts for this workflow live in
-[docs/promo/social-hooks.md](docs/promo/social-hooks.md).
+[docs/promo/social-hooks.md](docs/promo/social-hooks.md) and
+[docs/promo/release-note.md](docs/promo/release-note.md).
 
 See [the workflow risk tutorial](docs/tutorials/review-workflow-risk.md) for a
 review-ready walkthrough.

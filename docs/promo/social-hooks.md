@@ -38,3 +38,5 @@ bash demo/run-workflow-scan.sh
 The demo scans the included bad and good workflow fixtures, expects the risky
 fixture to fail the high-risk gate, and verifies stable rule IDs in the JSON
 report.
+
+For a longer launch-note draft, see [release-note.md](release-note.md).
