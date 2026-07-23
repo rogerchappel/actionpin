@@ -129,7 +129,7 @@ Use them sparingly and leave a human-readable comment nearby.
 
 ## Safety model
 
-ActionPin only reads workflow paths you ask it to scan, refuses paths outside the repo root, writes only when `--out` is provided, and never performs network calls while scanning. Reports include stable file/line/snippet evidence and remediation text.
+ActionPin only reads workflow paths you ask it to scan, refuses paths outside the repo root, and checks resolved filesystem paths before following symlinks. Symlinks that stay within the repo root are scanned; file or directory symlinks that escape it are rejected without reading the external content. ActionPin writes only when `--out` is provided and never performs network calls while scanning. Reports include stable file/line/snippet evidence and remediation text.
 
 ## CI usage
 
