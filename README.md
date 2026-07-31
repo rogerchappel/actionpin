@@ -141,6 +141,14 @@ ActionPin only reads workflow paths you ask it to scan, refuses paths outside th
 
 Use Markdown output for PR artifacts and JSON output for bots or release evidence.
 
+The `--format` option accepts `markdown` or `json`, and `--fail-on` accepts
+`info`, `low`, `medium`, `high`, or `critical`. Options that take values support
+both `--option value` and `--option=value`. Repeat `--ignore-rule` to ignore
+multiple rule IDs (comma-separated IDs also work); other options may be supplied
+only once. Unknown options, missing values, duplicate non-repeatable options,
+and unsupported values are command misuse: ActionPin explains the problem on
+stderr and exits with status 2.
+
 ## Demo Recipes
 
 - [Review Risk Workflow Demo](examples/review-risk-workflow.md) scans the bundled risky and safe workflow fixtures and writes both Markdown and JSON reports.
