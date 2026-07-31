@@ -1,5 +1,8 @@
 import type { ParsedArgs } from './types.js';
 
+const valueOptions = new Set(['config', 'fail-on', 'format', 'ignore-rule', 'out']);
+const repeatableOptions = new Set(['ignore-rule']);
+
 export function parseArgs(argv: string[]): ParsedArgs {
   const [command = 'help', ...rest] = argv;
   const paths: string[] = [];
@@ -14,11 +17,16 @@ export function parseArgs(argv: string[]): ParsedArgs {
     }
     const [rawName, inline] = arg.slice(2).split('=', 2);
     const name = rawName ?? '';
+    if (!valueOptions.has(name)) throw new Error(`Unknown option: --${name}`);
+    if (!repeatableOptions.has(name) && flags[name] !== undefined) {
+      throw new Error(`Duplicate option: --${name}`);
+    }
     const next = rest[i + 1];
-    const value: string | boolean = inline ?? (next && !next.startsWith('--') ? String(rest[++i]) : true);
+    const value = inline ?? (next && !next.startsWith('--') ? String(rest[++i]) : undefined);
+    if (!value) throw new Error(`Missing value for --${name}`);
     if (name === 'ignore-rule') {
       const existing = flags[name];
-      flags[name] = [...(Array.isArray(existing) ? existing : existing ? [String(existing)] : []), String(value)];
+      flags[name] = [...(Array.isArray(existing) ? existing : existing ? [String(existing)] : []), value];
     } else {
       flags[name] = value;
     }
