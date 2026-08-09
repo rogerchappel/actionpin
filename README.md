@@ -118,6 +118,13 @@ Create `actionpin.config.json` or pass `--config`:
 }
 ```
 
+ActionPin also checks `.actionpinrc.json` when `actionpin.config.json` is not
+present. Explicit CLI options override config-file values; for example,
+`--format markdown` overrides `"format": "json"`. Missing optional default
+config files are ignored, but a file named with `--config` must be readable and
+valid JSON. Unreadable, missing, malformed, or invalid explicit config files
+produce an explanation on stderr and exit with status 2.
+
 Inline allow comments are supported for narrow exceptions:
 
 ```yaml
