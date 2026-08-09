@@ -26,12 +26,11 @@ async function main(argv: string[]): Promise<number> {
   if (formatFlag && formatFlag !== 'markdown' && formatFlag !== 'json') {
     throw new Error(`Invalid value for --format: "${formatFlag}". Use one of: markdown, json`);
   }
-  const format: ReportFormat = formatFlag === 'json' ? 'json' : 'markdown';
   const fileConfig = await loadConfig(process.cwd(), flagString(parsed.flags, 'config'));
   const out = flagString(parsed.flags, 'out');
   const cliConfig = {
     root: process.cwd(),
-    format,
+    ...(formatFlag ? { format: formatFlag as ReportFormat } : {}),
     failOn: normalizeSeverity(flagString(parsed.flags, 'fail-on'), fileConfig.failOn ?? 'medium'),
     ignoreRules: flagList(parsed.flags, 'ignore-rule'),
     ...(out ? { out } : {})
@@ -45,7 +44,7 @@ async function main(argv: string[]): Promise<number> {
 }
 
 function help(): string {
-  return `ActionPin — local GitHub Actions safety scanner\n\nUsage:\n  actionpin scan [paths...] [--format markdown|json] [--out file] [--fail-on severity]\n  actionpin scan fixtures/bad-workflows --format json --fail-on high\n  actionpin rules\n\nOptions:\n  --format <format>   markdown or json (default: markdown)\n  --out <file>        Write the report to a file instead of stdout\n  --ignore-rule <id>  Ignore a rule id; repeat or comma-separate\n  --config <file>     Load JSON config (default: actionpin.config.json)\n  --fail-on <level>   info, low, medium, high, critical (default: medium)\n\nInvalid options or values exit with status 2 and an explanation on stderr.\n`;
+  return `ActionPin — local GitHub Actions safety scanner\n\nUsage:\n  actionpin scan [paths...] [--format markdown|json] [--out file] [--fail-on severity]\n  actionpin scan fixtures/bad-workflows --format json --fail-on high\n  actionpin rules\n\nOptions:\n  --format <format>   markdown or json (default: markdown)\n  --out <file>        Write the report to a file instead of stdout\n  --ignore-rule <id>  Ignore a rule id; repeat or comma-separate\n  --config <file>     Load JSON config; CLI options override config values\n  --fail-on <level>   info, low, medium, high, critical (default: medium)\n\nInvalid options or values exit with status 2 and an explanation on stderr.\n`;
 }
 
 main(process.argv.slice(2)).then((code) => {
