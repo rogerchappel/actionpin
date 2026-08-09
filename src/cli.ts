@@ -26,12 +26,11 @@ async function main(argv: string[]): Promise<number> {
   if (formatFlag && formatFlag !== 'markdown' && formatFlag !== 'json') {
     throw new Error(`Invalid value for --format: "${formatFlag}". Use one of: markdown, json`);
   }
-  const format: ReportFormat = formatFlag === 'json' ? 'json' : 'markdown';
   const fileConfig = await loadConfig(process.cwd(), flagString(parsed.flags, 'config'));
   const out = flagString(parsed.flags, 'out');
   const cliConfig = {
     root: process.cwd(),
-    format,
+    ...(formatFlag ? { format: formatFlag as ReportFormat } : {}),
     failOn: normalizeSeverity(flagString(parsed.flags, 'fail-on'), fileConfig.failOn ?? 'medium'),
     ignoreRules: flagList(parsed.flags, 'ignore-rule'),
     ...(out ? { out } : {})
