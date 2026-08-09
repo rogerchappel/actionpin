@@ -1,6 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
+import { mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 
 test('CLI emits JSON findings and nonzero exit when threshold is met', () => {
   const result = spawnSync(process.execPath, ['dist/src/cli.js', 'scan', 'fixtures/bad-workflows', '--format', 'json', '--fail-on', 'high'], { encoding: 'utf8' });
@@ -9,19 +12,19 @@ test('CLI emits JSON findings and nonzero exit when threshold is met', () => {
   assert.ok(report.findings.some((finding) => finding.ruleId === 'actions.unpinned'));
 });
 
-function runCli(...args: string[]) {
-  return spawnSync(process.execPath, ['dist/src/cli.js', ...args], { encoding: 'utf8' });
+function runCli(args: string[], cwd = process.cwd()) {
+  return spawnSync(process.execPath, [path.resolve('dist/src/cli.js'), ...args], { cwd, encoding: 'utf8' });
 }
 
 test('CLI accepts separate and inline option values with repeated ignore rules', () => {
-  const result = runCli(
+  const result = runCli([
     'scan',
     'fixtures/bad-workflows',
     '--format=json',
     '--fail-on', 'high',
     '--ignore-rule=secrets.plaintext',
     '--ignore-rule', 'events.pull_request_target'
-  );
+  ]);
   assert.equal(result.status, 1);
   const report = JSON.parse(result.stdout) as { findings: Array<{ ruleId: string }> };
   assert.ok(!report.findings.some((finding) => finding.ruleId === 'secrets.plaintext'));
@@ -40,9 +43,40 @@ test('CLI rejects unknown, invalid, missing, and duplicate options as misuse', (
   ];
 
   for (const item of cases) {
-    const result = runCli(...item.args);
+    const result = runCli(item.args);
     assert.equal(result.status, 2, item.args.join(' '));
     assert.match(result.stderr, new RegExp(item.message), item.args.join(' '));
     assert.equal(result.stdout, '', item.args.join(' '));
+  }
+});
+
+test('CLI uses config format unless an explicit format overrides it', () => {
+  const cwd = mkdtempSync(path.join(tmpdir(), 'actionpin-config-'));
+  writeFileSync(path.join(cwd, 'actionpin.config.json'), JSON.stringify({ format: 'json' }));
+
+  const fromConfig = runCli(['scan', '.'], cwd);
+  assert.equal(fromConfig.status, 0);
+  assert.doesNotThrow(() => JSON.parse(fromConfig.stdout));
+
+  const fromCli = runCli(['scan', '.', '--format', 'markdown'], cwd);
+  assert.equal(fromCli.status, 0);
+  assert.match(fromCli.stdout, /^# ActionPin report/);
+});
+
+test('CLI reports explicit config file errors as misuse', () => {
+  const cwd = mkdtempSync(path.join(tmpdir(), 'actionpin-config-errors-'));
+  writeFileSync(path.join(cwd, 'malformed.json'), '{');
+  writeFileSync(path.join(cwd, 'invalid.json'), JSON.stringify({ format: 'xml' }));
+
+  const cases = [
+    { file: 'missing.json', message: 'Unable to read config file' },
+    { file: 'malformed.json', message: 'Invalid JSON in config file' },
+    { file: 'invalid.json', message: 'Invalid config value for "format"' }
+  ];
+  for (const item of cases) {
+    const result = runCli(['scan', '.', '--config', item.file], cwd);
+    assert.equal(result.status, 2, item.file);
+    assert.match(result.stderr, new RegExp(item.message), item.file);
+    assert.equal(result.stdout, '', item.file);
   }
 });
