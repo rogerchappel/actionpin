@@ -4,13 +4,15 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 OUT_DIR="${TMPDIR:-/tmp}/actionpin-pr-target-demo"
 
+cd "$ROOT_DIR"
+
 rm -rf "$OUT_DIR"
 mkdir -p "$OUT_DIR"
 
-npm --prefix "$ROOT_DIR" run build >/dev/null
+npm run build >/dev/null
 
 set +e
-node "$ROOT_DIR/dist/src/cli.js" scan "$ROOT_DIR/fixtures/warn-workflows" \
+node dist/src/cli.js scan fixtures/warn-workflows \
   --format markdown \
   --fail-on medium \
   --out "$OUT_DIR/pr-target-review.md"
@@ -23,7 +25,7 @@ if [ "$status" -ne 1 ]; then
 fi
 
 set +e
-node "$ROOT_DIR/dist/src/cli.js" scan "$ROOT_DIR/fixtures/warn-workflows" \
+node dist/src/cli.js scan fixtures/warn-workflows \
   --format json \
   --out "$OUT_DIR/pr-target-review.json"
 status=$?
