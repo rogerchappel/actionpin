@@ -148,6 +148,9 @@ ActionPin only reads workflow paths you ask it to scan, refuses paths outside th
 
 Use Markdown output for PR artifacts and JSON output for bots or release evidence.
 
+See the [CLI reference](docs/CLI.md) for path discovery, every option,
+configuration precedence, and the `0`/`1`/`2` exit-status contract.
+
 The `--format` option accepts `markdown` or `json`, and `--fail-on` accepts
 `info`, `low`, `medium`, `high`, or `critical`. Options that take values support
 both `--option value` and `--option=value`. Repeat `--ignore-rule` to ignore
