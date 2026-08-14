@@ -1,0 +1,5 @@
+name: Scalar event
+on: "pull_request_target"
+permissions:
+  contents: read
+jobs: {}

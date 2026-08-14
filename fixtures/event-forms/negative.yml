@@ -1,0 +1,11 @@
+name: Negative controls mention pull_request_target
+# on: pull_request_target
+on: [push, pull_request_target_review]
+permissions:
+  contents: read
+jobs:
+  pull_request_target:
+    name: unrelated pull_request_target scalar text
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo pull_request_target

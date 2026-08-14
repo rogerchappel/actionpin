@@ -54,3 +54,20 @@ jobs:
   const findings = await analyzeFile(temp);
   assert.ok(findings.some((finding) => finding.ruleId === 'shell.curl-bash'));
 });
+
+test('analyzer reports the exact pull_request_target declaration line', async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), 'actionpin-events-'));
+  const temp = path.join(dir, 'block-sequence.yml');
+  await writeFile(temp, `name: event forms
+on:
+  - push
+  - pull_request_target
+permissions: read-all
+jobs: {}
+`);
+  const findings = await analyzeFile(temp);
+  const eventFindings = findings.filter((finding) => finding.ruleId === 'events.pull_request_target');
+  assert.equal(eventFindings.length, 1);
+  assert.equal(eventFindings[0]?.line, 4);
+  assert.equal(eventFindings[0]?.snippet, '- pull_request_target');
+});

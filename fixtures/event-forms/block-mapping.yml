@@ -1,0 +1,7 @@
+name: Block mapping event
+"on":
+  'pull_request_target':
+    types: [opened]
+permissions:
+  contents: read
+jobs: {}

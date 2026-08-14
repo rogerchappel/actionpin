@@ -21,6 +21,21 @@ test('CLI reports scalar and mapped broad permission fixtures', () => {
   }
 });
 
+test('CLI reports one pull_request_target finding for each valid fixture form', () => {
+  const result = spawnSync(process.execPath, ['dist/src/cli.js', 'scan', 'fixtures/event-forms', '--format', 'json', '--fail-on', 'high'], { encoding: 'utf8' });
+  assert.equal(result.status, 0);
+  const report = JSON.parse(result.stdout) as { findings: Array<{ ruleId: string; file: string; line: number }> };
+  const events = report.findings.filter((finding) => finding.ruleId === 'events.pull_request_target');
+  assert.equal(events.length, 4);
+  assert.deepEqual(events.map((finding) => [path.basename(finding.file), finding.line]), [
+    ['block-mapping.yml', 3],
+    ['block-sequence.yml', 4],
+    ['inline-sequence.yml', 2],
+    ['scalar.yml', 2]
+  ]);
+  assert.ok(!events.some((finding) => finding.file.endsWith('negative.yml')));
+});
+
 function runCli(args: string[], cwd = process.cwd()) {
   return spawnSync(process.execPath, [path.resolve('dist/src/cli.js'), ...args], { cwd, encoding: 'utf8' });
 }
