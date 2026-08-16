@@ -1,12 +1,11 @@
 import { promises as fs } from 'node:fs';
 import type { Finding } from './types.js';
 import { getRule } from './rules.js';
-import { findUses, hasPullRequestTarget, hasTopLevelPermissions, parseWorkflowText } from './parser.js';
+import { findBroadTopLevelPermissions, findUses, hasPullRequestTarget, hasTopLevelPermissions, parseWorkflowText } from './parser.js';
 import { previousLineAllows } from './allow.js';
 
 const fullSha = /^[^@\s]+@[0-9a-f]{40}$/i;
 const localOrDocker = /^(\.\/|docker:\/\/)/;
-const broadPermissions = /^\s*permissions\s*:\s*(write-all|read-all|write)\s*$/i;
 const plaintextSecret = /(ghp_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_]{20,}|AKIA[0-9A-Z]{16}|(?:api[_-]?key|token|secret|password)\s*[:=]\s*['"][^'"${][^'"]{7,}['"])/i;
 const curlBash = /\b(curl|wget)\b[^|\n]*\|\s*(sudo\s+)?(bash|sh)\b/i;
 const multilineCurlBash = /\b(curl|wget)\b[\s\S]{0,300}?\|\s*(sudo\s+)?(bash|sh)\b/i;
@@ -27,9 +26,11 @@ export async function analyzeFile(file: string): Promise<Finding[]> {
     push(findings, 'permissions.missing', file, 1, firstMeaningfulLine(workflow.lines));
   }
 
+  const broadPermission = findBroadTopLevelPermissions(workflow.lines);
+  if (broadPermission) push(findings, 'permissions.broad', file, broadPermission.line, broadPermission.snippet);
+
   let sawCurlBash = false;
   workflow.lines.forEach((line, index) => {
-    if (broadPermissions.test(line)) push(findings, 'permissions.broad', file, index + 1, line.trim());
     if (plaintextSecret.test(line)) push(findings, 'secrets.plaintext', file, index + 1, line.trim());
     if (curlBash.test(line)) {
       sawCurlBash = true;

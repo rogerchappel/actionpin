@@ -12,6 +12,15 @@ test('CLI emits JSON findings and nonzero exit when threshold is met', () => {
   assert.ok(report.findings.some((finding) => finding.ruleId === 'actions.unpinned'));
 });
 
+test('CLI reports scalar and mapped broad permission fixtures', () => {
+  for (const file of ['supply-chain.yml', 'mapped-permissions.yml']) {
+    const result = spawnSync(process.execPath, ['dist/src/cli.js', 'scan', `fixtures/bad-workflows/${file}`, '--format', 'json', '--fail-on', 'high'], { encoding: 'utf8' });
+    assert.equal(result.status, 1, file);
+    const report = JSON.parse(result.stdout) as { findings: Array<{ ruleId: string }> };
+    assert.equal(report.findings.filter((finding) => finding.ruleId === 'permissions.broad').length, 1, file);
+  }
+});
+
 function runCli(args: string[], cwd = process.cwd()) {
   return spawnSync(process.execPath, [path.resolve('dist/src/cli.js'), ...args], { cwd, encoding: 'utf8' });
 }
