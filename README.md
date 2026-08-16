@@ -100,7 +100,10 @@ and [docs/promo/permissions-review-video-brief.md](docs/promo/permissions-review
 
 - `actions.unpinned` — third-party `uses:` references must be pinned to a full 40-character commit SHA.
 - `permissions.missing` — top-level `permissions:` should be explicit.
-- `permissions.broad` — `write-all`, `read-all`, and broad top-level write permissions are risky.
+- `permissions.broad` — scalar `write-all`, `read-all`, or `write`, and any
+  `scope: write` entry in a top-level block permission map, are risky. A mapped
+  declaration produces one finding at its first write scope; read-only maps
+  such as `contents: read` remain clean.
 - `secrets.plaintext` — secret-looking literal values should not live in workflow YAML.
 - `events.pull_request_target` — privileged PR workflows need careful review.
 - `shell.curl-bash` — piping remote content into `bash`/`sh` is flagged.

@@ -22,7 +22,7 @@ export const rules: RuleMeta[] = [
     title: 'Workflow grants broad token permissions',
     severity: 'high',
     category: 'permissions',
-    description: 'Broad permissions such as write-all or permissive top-level write access increase blast radius if a workflow is compromised.',
+    description: 'Top-level write-all, read-all, write, or any explicitly mapped write scope increases blast radius if a workflow is compromised.',
     remediation: 'Replace broad permissions with explicit minimal scopes and read-only defaults.'
   },
   {

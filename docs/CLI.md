@@ -84,3 +84,15 @@ Explicit CLI values override `format` and `failOn` from the file. CLI
 A status of `1` is a valid scan result: the requested Markdown or JSON report
 is still written to stdout or the `--out` file. Misuse and configuration errors
 are explained on stderr.
+
+## Permission semantics
+
+The `permissions.broad` rule reports top-level scalar declarations of
+`permissions: write-all`, `permissions: read-all`, or `permissions: write`.
+For top-level block maps, any explicit scope set to `write` is broad, including
+documented GitHub scopes such as `contents`, `issues`, `packages`, and
+`pull-requests`. A map with multiple write scopes produces one finding at the
+first write entry. Maps containing only `read` or `none` values remain clean.
+
+This lightweight check covers literal scalar and block-map declarations. It
+does not expand YAML aliases, expressions, or flow-style inline maps.
