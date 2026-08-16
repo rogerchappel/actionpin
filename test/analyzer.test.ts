@@ -16,6 +16,26 @@ test('analyzer flags bad workflow patterns', async () => {
   assert.ok(ids.includes('events.pull_request_target'));
 });
 
+test('analyzer reports scalar and mapped broad permissions exactly once', async () => {
+  const cases = [
+    { file: 'fixtures/bad-workflows/supply-chain.yml', line: 3, snippet: 'permissions: write-all' },
+    { file: 'fixtures/bad-workflows/mapped-permissions.yml', line: 5, snippet: 'issues: write' }
+  ];
+
+  for (const item of cases) {
+    const findings = await analyzeFile(path.resolve(item.file));
+    const broad = findings.filter((finding) => finding.ruleId === 'permissions.broad');
+    assert.equal(broad.length, 1, item.file);
+    assert.equal(broad[0]?.line, item.line, item.file);
+    assert.equal(broad[0]?.snippet, item.snippet, item.file);
+  }
+});
+
+test('analyzer leaves least-privilege permission maps clean', async () => {
+  const findings = await analyzeFile(path.resolve('fixtures/good-workflows/ci.yml'));
+  assert.ok(!findings.some((finding) => finding.ruleId === 'permissions.broad'));
+});
+
 
 test('analyzer flags curl piped to shell across multiline workflow steps', async () => {
   const dir = await mkdtemp(path.join(tmpdir(), 'actionpin-'));
