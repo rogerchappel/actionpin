@@ -28,28 +28,42 @@ export function findUses(lines: string[]): UsesRef[] {
 }
 
 export function hasTopLevelPermissions(lines: string[]): boolean {
-  return lines.some((line) => /^permissions\s*:/i.test(line));
+  return lines.some((line) => permissionsDeclaration(line) !== undefined);
 }
 
 export function findBroadTopLevelPermissions(lines: string[]): PermissionGrant | undefined {
-  const permissionsIndex = lines.findIndex((line) => /^permissions\s*:/i.test(line));
+  const permissionsIndex = lines.findIndex((line) => permissionsDeclaration(line) !== undefined);
   if (permissionsIndex < 0) return undefined;
 
   const declaration = lines[permissionsIndex] ?? '';
-  const scalar = /^permissions\s*:\s*(write-all|read-all|write)\s*(?:#.*)?$/i.exec(declaration);
-  if (scalar) return { line: permissionsIndex + 1, snippet: declaration.trim() };
-  if (!/^permissions\s*:\s*(?:#.*)?$/i.test(declaration)) return undefined;
+  const value = permissionsDeclaration(declaration) ?? '';
+  if (/^(?:['"]?(?:write-all|read-all|write)['"]?)$/i.test(value)) {
+    return { line: permissionsIndex + 1, snippet: declaration.trim() };
+  }
+  if (value.startsWith('{') && value.endsWith('}')) {
+    const entries = value.slice(1, -1).split(',');
+    if (entries.some((entry) => /^(?:[A-Za-z][\w-]*|'[^']+'|"[^"]+")\s*:\s*['"]?write['"]?\s*$/i.test(entry.trim()))) {
+      return { line: permissionsIndex + 1, snippet: declaration.trim() };
+    }
+    return undefined;
+  }
+  if (value !== '') return undefined;
 
   for (let index = permissionsIndex + 1; index < lines.length; index += 1) {
     const line = lines[index] ?? '';
     if (!line.trim() || /^\s*#/.test(line)) continue;
     if (!/^\s/.test(line)) break;
-    if (/^\s+[A-Za-z][\w-]*\s*:\s*write\s*(?:#.*)?$/i.test(line)) {
+    if (/^\s+(?:[A-Za-z][\w-]*|'[^']+'|"[^"]+")\s*:\s*['"]?write['"]?\s*(?:#.*)?$/i.test(line)) {
       return { line: index + 1, snippet: line.trim() };
     }
   }
 
   return undefined;
+}
+
+function permissionsDeclaration(line: string): string | undefined {
+  const match = /^(?:permissions|'permissions'|"permissions")\s*:\s*(.*?)\s*$/i.exec(withoutComment(line));
+  return match?.[1]?.trim();
 }
 
 export function hasPullRequestTarget(lines: string[]): number | undefined {

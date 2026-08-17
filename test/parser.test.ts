@@ -1,12 +1,33 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { findUses, hasTopLevelPermissions, hasPullRequestTarget } from '../src/parser.js';
+import { findBroadTopLevelPermissions, findUses, hasTopLevelPermissions, hasPullRequestTarget } from '../src/parser.js';
 
 test('parser finds uses references and workflow signals', () => {
   const lines = ['on: [push, pull_request_target]', 'permissions:', '  contents: read', 'steps:', '  - uses: actions/checkout@v4'];
   assert.deepEqual(findUses(lines).map((item) => item.value), ['actions/checkout@v4']);
   assert.equal(hasTopLevelPermissions(lines), true);
   assert.equal(hasPullRequestTarget(lines), 1);
+});
+
+test('parser recognizes quoted permissions keys and supported broad grant forms', () => {
+  const cases = [
+    { lines: ['"permissions": write-all # broad'], line: 1, snippet: '"permissions": write-all # broad' },
+    { lines: ["'permissions':", "  'issues': write # broad"], line: 2, snippet: "'issues': write # broad" },
+    { lines: ['permissions: { contents: read, issues: write }'], line: 1, snippet: 'permissions: { contents: read, issues: write }' },
+    { lines: ['permissions: { "contents": read, \'pull-requests\': "write" } # broad'], line: 1, snippet: 'permissions: { "contents": read, \'pull-requests\': "write" } # broad' }
+  ];
+
+  for (const item of cases) {
+    assert.equal(hasTopLevelPermissions(item.lines), true);
+    assert.deepEqual(findBroadTopLevelPermissions(item.lines), { line: item.line, snippet: item.snippet });
+  }
+});
+
+test('parser leaves read-only and empty flow permission maps clean', () => {
+  for (const line of ['permissions: {}', "'permissions': { contents: read, issues: 'read' }", '"permissions": { } # none']) {
+    assert.equal(hasTopLevelPermissions([line]), true);
+    assert.equal(findBroadTopLevelPermissions([line]), undefined, line);
+  }
 });
 
 test('parser locates pull_request_target in every supported top-level event form', () => {
