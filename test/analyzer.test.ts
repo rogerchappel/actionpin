@@ -19,7 +19,8 @@ test('analyzer flags bad workflow patterns', async () => {
 test('analyzer reports scalar and mapped broad permissions exactly once', async () => {
   const cases = [
     { file: 'fixtures/bad-workflows/supply-chain.yml', line: 3, snippet: 'permissions: write-all' },
-    { file: 'fixtures/bad-workflows/mapped-permissions.yml', line: 5, snippet: 'issues: write' }
+    { file: 'fixtures/bad-workflows/mapped-permissions.yml', line: 5, snippet: 'issues: write' },
+    { file: 'fixtures/bad-workflows/flow-permissions.yml', line: 3, snippet: '"permissions": { contents: read, \'pull-requests\': write } # review writes' }
   ];
 
   for (const item of cases) {
@@ -32,8 +33,10 @@ test('analyzer reports scalar and mapped broad permissions exactly once', async 
 });
 
 test('analyzer leaves least-privilege permission maps clean', async () => {
-  const findings = await analyzeFile(path.resolve('fixtures/good-workflows/ci.yml'));
-  assert.ok(!findings.some((finding) => finding.ruleId === 'permissions.broad'));
+  for (const file of ['fixtures/good-workflows/ci.yml', 'fixtures/good-workflows/flow-permissions.yml']) {
+    const findings = await analyzeFile(path.resolve(file));
+    assert.ok(!findings.some((finding) => finding.ruleId === 'permissions.broad'), file);
+  }
 });
 
 

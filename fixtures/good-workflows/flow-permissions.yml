@@ -1,0 +1,4 @@
+name: Read-only flow permissions
+on: push
+'permissions': { contents: read, "issues": read } # least privilege
+jobs: {}

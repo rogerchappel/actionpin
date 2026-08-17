@@ -1,0 +1,4 @@
+name: Flow permissions
+on: push
+"permissions": { contents: read, 'pull-requests': write } # review writes
+jobs: {}
