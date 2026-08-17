@@ -15,6 +15,12 @@ directory. Directories are searched recursively for `.yml` and `.yaml` files;
 `node_modules` and `.git` directories are skipped. When no path is supplied,
 ActionPin scans `.github/workflows`.
 
+The `events.pull_request_target` rule recognizes the trigger in every supported
+GitHub Actions declaration style: a scalar (`on: pull_request_target`), inline
+sequence, block sequence, or event mapping. The `on` key and event name may be
+quoted. Matches are limited to the top-level event declaration, so comments,
+job or step keys, similarly named events, and unrelated text are ignored.
+
 Options accept either `--option value` or `--option=value`:
 
 | Option | Values | Default | Purpose |

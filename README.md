@@ -105,7 +105,7 @@ and [docs/promo/permissions-review-video-brief.md](docs/promo/permissions-review
   declaration produces one finding at its first write scope; read-only maps
   such as `contents: read` remain clean.
 - `secrets.plaintext` — secret-looking literal values should not live in workflow YAML.
-- `events.pull_request_target` — privileged PR workflows need careful review.
+- `events.pull_request_target` — privileged PR workflows need careful review. Recognizes top-level scalar, inline sequence, block sequence, and mapping trigger declarations, including quoted event names.
 - `shell.curl-bash` — piping remote content into `bash`/`sh` is flagged.
 - `shell.insecure-flags` — patterns like `set +e`, `curl -k`, and `wget --no-check-certificate` are flagged.
 

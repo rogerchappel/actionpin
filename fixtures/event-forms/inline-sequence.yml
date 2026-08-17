@@ -1,0 +1,5 @@
+name: Inline sequence event
+'on': [push, 'pull_request_target']
+permissions:
+  contents: read
+jobs: {}

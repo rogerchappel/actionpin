@@ -53,6 +53,47 @@ export function findBroadTopLevelPermissions(lines: string[]): PermissionGrant |
 }
 
 export function hasPullRequestTarget(lines: string[]): number | undefined {
-  const idx = lines.findIndex((line) => /^\s*pull_request_target\s*:/i.test(line) || /^on\s*:\s*\[.*pull_request_target.*\]/i.test(line));
-  return idx >= 0 ? idx + 1 : undefined;
+  for (let index = 0; index < lines.length; index += 1) {
+    const declaration = /^(?:on|['"]on['"])\s*:\s*(.*?)\s*$/.exec(withoutComment(lines[index] ?? ''));
+    if (!declaration) continue;
+
+    const value = declaration[1]?.trim() ?? '';
+    if (isEventName(value)) return index + 1;
+    if (value.startsWith('[') && value.endsWith(']')) {
+      const events = value.slice(1, -1).split(',').map((event) => event.trim());
+      if (events.some(isEventName)) return index + 1;
+    }
+    if (value !== '') continue;
+
+    for (let childIndex = index + 1; childIndex < lines.length; childIndex += 1) {
+      const child = withoutComment(lines[childIndex] ?? '');
+      if (!child.trim()) continue;
+      const indent = child.match(/^\s*/)?.[0].length ?? 0;
+      if (indent === 0) break;
+
+      const item = /^\s*-\s*(.*?)\s*$/.exec(child)?.[1];
+      if (item !== undefined && isEventName(item)) return childIndex + 1;
+
+      const key = /^\s*([^:]+?)\s*:/.exec(child)?.[1];
+      if (key !== undefined && isEventName(key)) return childIndex + 1;
+    }
+  }
+  return undefined;
+}
+
+function isEventName(value: string): boolean {
+  return /^(?:pull_request_target|['"]pull_request_target['"])$/i.test(value.trim());
+}
+
+function withoutComment(line: string): string {
+  let quote: "'" | '"' | undefined;
+  for (let index = 0; index < line.length; index += 1) {
+    const character = line[index];
+    if ((character === "'" || character === '"') && (!quote || quote === character)) {
+      quote = quote ? undefined : character;
+    } else if (character === '#' && !quote && (index === 0 || /\s/.test(line[index - 1] ?? ''))) {
+      return line.slice(0, index).trimEnd();
+    }
+  }
+  return line;
 }
