@@ -6,7 +6,10 @@ Use this checklist before publishing an ActionPin package or tagging a release.
 
 - Run `npm run release:check`.
 - Confirm `npm run smoke` still flags high-risk workflow fixtures and permits the good workflow fixture.
-- Inspect `npm pack --dry-run` output and confirm it includes `dist/src`, `README.md`, `LICENSE`, and `SECURITY.md`.
+- From a clean checkout after `npm ci`, run `npm pack --dry-run --json`. The
+  `prepack` lifecycle builds the package, and the JSON file list must include
+  `dist/src/index.js`, `dist/src/index.d.ts`, and `dist/src/cli.js` alongside
+  `README.md`, `LICENSE`, and `SECURITY.md`.
 
 ## Evidence
 
