@@ -11,6 +11,10 @@ format and uses semantic versioning when versioned releases are published.
 
 - Initial project setup.
 
+### Fixed
+
+- Isolate demo compilation output so parallel CLI validation cannot observe a shared build being rewritten.
+
 ## Release Links
 
 - Unreleased:
