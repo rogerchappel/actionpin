@@ -63,7 +63,8 @@ test('CLI rejects unknown, invalid, missing, and duplicate options as misuse', (
     { args: ['scan', 'fixtures/good-workflows', '--out'], message: 'Missing value for --out' },
     { args: ['scan', 'fixtures/good-workflows', '--format='], message: 'Missing value for --format' },
     { args: ['scan', 'fixtures/good-workflows', '--config', '--format', 'json'], message: 'Missing value for --config' },
-    { args: ['scan', 'fixtures/good-workflows', '--format', 'json', '--format=markdown'], message: 'Duplicate option: --format' }
+    { args: ['scan', 'fixtures/good-workflows', '--format', 'json', '--format=markdown'], message: 'Duplicate option: --format' },
+    { args: ['scan', 'fixtures/good-workflows', '--format=json', '--format', 'markdown'], message: 'Duplicate option: --format' }
   ];
 
   for (const item of cases) {
