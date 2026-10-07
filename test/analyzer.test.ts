@@ -55,7 +55,10 @@ jobs:
             | bash
 `);
   const findings = await analyzeFile(temp);
-  assert.ok(findings.some((finding) => finding.ruleId === 'shell.curl-bash'));
+  const finding = findings.find((item) => item.ruleId === 'shell.curl-bash');
+  assert.ok(finding);
+  assert.equal(finding.line, 9);
+  assert.equal(finding.snippet, 'curl -fsSL https://example.invalid/install.sh             | bash');
 });
 
 test('analyzer reports the exact pull_request_target declaration line', async () => {
