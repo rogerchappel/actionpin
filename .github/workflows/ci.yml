@@ -11,8 +11,11 @@ permissions:
 
 jobs:
   test:
-    name: Test ActionPin
+    name: Test ActionPin (Node ${{ matrix.node-version }})
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20, 24]
     steps:
       - name: Check out repository
         uses: actions/checkout@v7 # actionpin allow: actions.unpinned
@@ -20,7 +23,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v7 # actionpin allow: actions.unpinned
         with:
-          node-version: 24
+          node-version: ${{ matrix.node-version }}
           cache: npm
 
       - name: Install dependencies
